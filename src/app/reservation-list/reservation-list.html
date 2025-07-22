@@ -1,1 +1,17 @@
-<p>reservation-list works!</p>
+<h2>Reservation List</h2>
+
+@if (reservations.length > 0) {
+<ul>
+  @for (reservation of reservations; track $index) {
+  <li>
+    <strong>Guest Name:</strong> {{ reservation.guestName }}<br />
+    <strong>Guest Email:</strong> {{ reservation.email }}<br />
+    <strong>Room Number:</strong> {{ reservation.roomNumber }}<br />
+    <strong>Check-in Date:</strong> {{ reservation.checkInDate }}<br />
+    <strong>Check-out Date:</strong> {{ reservation.checkOutDate }}<br />
+  </li>
+  }
+</ul>
+} @else {
+<p>No reservations found.</p>
+}

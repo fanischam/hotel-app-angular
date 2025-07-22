@@ -3,6 +3,6 @@ export interface Reservation {
   checkInDate: Date;
   checkOutDate: Date;
   guestName: string;
-  guestEmail: string;
+  email: string;
   roomNumber: string;
 }
