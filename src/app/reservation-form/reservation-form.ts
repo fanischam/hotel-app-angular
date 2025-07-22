@@ -8,6 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { OnInit } from '@angular/core';
+import { ReservationService } from '../reservation/reservation';
 
 @Component({
   selector: 'app-reservation-form',
@@ -18,7 +19,10 @@ import { OnInit } from '@angular/core';
 export class ReservationForm implements OnInit {
   reservationForm: FormGroup = new FormGroup({});
 
-  constructor(private formbuilder: FormBuilder) {}
+  constructor(
+    private formbuilder: FormBuilder,
+    private reservationService: ReservationService
+  ) {}
 
   ngOnInit() {
     this.reservationForm = this.formbuilder.group({
@@ -52,8 +56,11 @@ export class ReservationForm implements OnInit {
 
   onSubmit() {
     if (this.reservationForm.valid) {
-      // Handle form submission logic here
-      console.log('Form Submitted!');
+      this.reservationService.createReservation({
+        id: Date.now().toString(), // Generate a unique ID
+        ...this.reservationForm.value,
+      });
+      console.log('Reservation created:', this.reservationForm.value);
     }
   }
 }
