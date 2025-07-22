@@ -1,1 +1,38 @@
-<p>reservation-form works!</p>
+<form [formGroup]="reservationForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="">Check-In Date</label>
+    <input type="date" formControlName="checkInDate" />
+    @if (checkInDate.invalid && (checkInDate.dirty || checkInDate.touched)) {
+    <div class="error">Check-In Date is required.</div>
+    }
+  </div>
+  <div>
+    <label for="">Check-Out Date</label>
+    <input type="date" formControlName="checkOutDate" />
+    @if (checkOutDate.invalid && (checkOutDate.dirty || checkOutDate.touched)) {
+    <div class="error">Check-Out Date is required.</div>
+    }
+  </div>
+  <div>
+    <label for="">Guest Name</label>
+    <input type="text" formControlName="guestName" />
+    @if (guestName.invalid && (guestName.dirty || guestName.touched)) {
+    <div class="error">Guest Name is required.</div>
+    }
+  </div>
+  <div>
+    <label for="">Email</label>
+    <input type="email" formControlName="email" />
+    @if (email.invalid && (email.dirty || email.touched)) {
+    <div class="error">Email is required.</div>
+    }
+  </div>
+  <div>
+    <label for="">Room Number</label>
+    <input type="number" formControlName="roomNumber" />
+    @if (roomNumber.invalid && (roomNumber.dirty || roomNumber.touched)) {
+    <div class="error">Room Number is required.</div>
+    }
+  </div>
+  <button type="submit" [disabled]="reservationForm.invalid">Submit</button>
+</form>
