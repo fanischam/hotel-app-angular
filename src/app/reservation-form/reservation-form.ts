@@ -10,10 +10,11 @@ import {
 import { OnInit } from '@angular/core';
 import { ReservationService } from '../reservation/reservation';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Home } from '../home/home';
 
 @Component({
   selector: 'app-reservation-form',
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule, Home],
   templateUrl: './reservation-form.html',
   styleUrl: './reservation-form.css',
 })
