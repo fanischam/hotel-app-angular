@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { OnInit } from '@angular/core';
 import { ReservationService } from '../reservation/reservation';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-reservation-form',
@@ -21,7 +22,9 @@ export class ReservationForm implements OnInit {
 
   constructor(
     private formbuilder: FormBuilder,
-    private reservationService: ReservationService
+    private reservationService: ReservationService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -32,6 +35,22 @@ export class ReservationForm implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       roomNumber: ['', Validators.required],
     });
+
+    let id = this.activatedRoute.snapshot.paramMap.get('id');
+    if (id) {
+      const reservation = this.reservationService.getReservationById(id);
+      if (reservation) {
+        this.reservationForm.patchValue({
+          checkInDate: reservation.checkInDate,
+          checkOutDate: reservation.checkOutDate,
+          guestName: reservation.guestName,
+          email: reservation.email,
+          roomNumber: reservation.roomNumber,
+        });
+      } else {
+        console.error('Reservation not found');
+      }
+    }
   }
 
   get checkInDate() {
@@ -56,11 +75,23 @@ export class ReservationForm implements OnInit {
 
   onSubmit() {
     if (this.reservationForm.valid) {
-      this.reservationService.createReservation({
-        id: Date.now().toString(), // Generate a unique ID
-        ...this.reservationForm.value,
-      });
-      console.log('Reservation created:', this.reservationForm.value);
+      if (this.activatedRoute.snapshot.paramMap.get('id')) {
+        // Update existing reservation
+        const id = this.activatedRoute.snapshot.paramMap.get('id')!;
+        this.reservationService.updateReservation({
+          id,
+          ...this.reservationForm.value,
+        });
+        console.log('Reservation updated:', this.reservationForm.value);
+      } else {
+        // Create new reservation
+        this.reservationService.createReservation({
+          id: Date.now().toString(), // Generate a unique ID
+          ...this.reservationForm.value,
+        });
+        console.log('Reservation created:', this.reservationForm.value);
+        this.router.navigate(['/list']);
+      }
     }
   }
 }
